@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="RED LEDGER 赤紅帳本，個人收支管理工具">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>RED LEDGER｜赤紅帳本</title>
+<style>
+:root{color-scheme:dark;--bg:#090909;--panel:#151214;--line:#40232b;--red:#e33c53;--muted:#a99ba0;--text:#f5edef}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#36121b 0,transparent 48%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
+main{max-width:900px;margin:auto;padding:22px 0 40px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.eyebrow{font-size:10px;letter-spacing:4px;color:#ed7180}.brand{font-size:27px;font-weight:850;letter-spacing:2px;margin:5px 0}.sub,.muted{color:var(--muted);font-size:12px}.pill{border:1px solid #773040;border-radius:30px;padding:6px 10px;color:#eaa0aa;font-size:10px}
+.panel{background:linear-gradient(145deg,#191517,#100e10);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 8px 30px #0005}.heading{font-size:13px;font-weight:750;letter-spacing:1px;margin:0 0 13px}.tabs{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+button,.btn{cursor:pointer;border:1px solid #8c3041;background:#180e11;color:#f6dfe3;border-radius:8px;padding:10px 13px;font-size:12px;box-shadow:0 0 8px #d52e4933,inset 0 0 5px #d52e4922;transition:.18s}
+button:hover,.btn:hover{box-shadow:0 0 15px #e33c5377;border-color:#ed6678}.tab.active,.primary{background:#8e2033;border-color:#f05b70;color:white;box-shadow:0 0 12px #e33c5366}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.stat{background:#0e0c0d;border:1px solid #3d222a;border-radius:10px;padding:12px;min-width:0}.stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:8px}.stat strong{font-size:clamp(14px,3.5vw,21px);overflow-wrap:anywhere}.income{color:#e7a2ad}.expense{color:#f05b70}.balance{color:#f5edef}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;color:#c7b8bd;font-size:11px;margin-bottom:5px}input,select{width:100%;padding:11px;background:#0b090a;color:var(--text);border:1px solid #50313a;border-radius:8px;font-size:13px;outline:none}input:focus,select:focus{border-color:#e65369;box-shadow:0 0 8px #e33c5355}input[type=date],input[type=month]{color-scheme:dark}.wide{width:100%;margin-top:3px}
+.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #302027}.row:last-child{border:0}.dot{width:8px;height:8px;border-radius:50%;flex:none}.info{flex:1;min-width:0}.info b{display:block;font-size:13px;overflow-wrap:anywhere}.info small{color:var(--muted);font-size:10px}.amt{font-size:13px;font-weight:750;white-space:nowrap}.del{padding:6px 8px;font-size:10px}.empty{text-align:center;color:#94878b;padding:25px 8px;font-size:12px}.progress{height:5px;background:#302027;border-radius:9px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;background:var(--red)}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:9px}.catline{padding:7px 0}.catline>div:first-child{display:flex;justify-content:space-between;font-size:12px;gap:8px}.footer{display:flex;gap:8px;flex-wrap:wrap}.footer button{flex:1}.hint{font-size:10px;color:#92858a;line-height:1.7;margin-top:12px}.chart{display:flex;align-items:end;gap:7px;height:125px;padding:10px 0 0}.barcol{flex:1;min-width:0;text-align:center;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:5px}.bar{width:100%;max-width:34px;background:linear-gradient(#f05b70,#791b2c);border-radius:5px 5px 0 0;min-height:2px}.barcol small{font-size:9px;color:var(--muted)}
+@media(max-width:480px){.stats{grid-template-columns:1fr 1fr}.stat:last-child{grid-column:1/-1}.brand{font-size:24px}.panel{padding:13px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top"><div><div class="eyebrow">PERSONAL FINANCE SYSTEM</div><div class="brand">RED LEDGER</div><div class="sub">赤紅帳本 · 管理每一筆資金</div></div><span class="pill">NTD / TWD</span></header>
+<nav class="tabs" aria-label="統計期間"><button class="tab active" data-period="month">本月</button><button class="tab" data-period="year">本年</button><button class="tab" data-period="all">累計總覽</button></nav>
+<section class="panel"><h2 class="heading" id="summaryTitle">MONTHLY OVERVIEW / 月度總覽</h2><div class="stats">
+<div class="stat"><small>總收入 · INCOME</small><strong class="income" id="sIncome">NT$ 0</strong></div>
+<div class="stat"><small>總支出 · EXPENSE</small><strong class="expense" id="sExpense">NT$ 0</strong></div>
+<div class="stat"><small>收支結餘 · BALANCE</small><strong class="balance" id="sBalance">NT$ 0</strong></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:15px;font-size:11px"><span class="muted">支出佔收入比例</span><span class="muted" id="ratio">尚無資料</span></div><div class="progress"><span id="ratioBar" style="width:0%"></span></div></section>
+<section class="panel"><h2 class="heading">新增交易 / NEW TRANSACTION</h2><form id="entryForm" class="grid">
+<div class="field"><label for="kind">交易類型</label><select id="kind"><option value="expense">支出 EXPENSE</option><option value="income">收入 INCOME</option></select></div>
+<div class="field"><label for="date">交易日期</label><input id="date" type="date" required></div>
+<div class="field"><label for="category">交易分類</label><select id="category"></select></div>
+<div class="field"><label for="amount">金額（NT$）</label><input id="amount" type="number" min="1" step="1" placeholder="輸入金額" required></div>
+<div class="field full"><label for="note">備註（選填）</label><input id="note" maxlength="100" placeholder="例如：午餐、十一月薪水"></div>
+<button class="primary wide field full" type="submit">＋ 新增一筆紀錄</button></form></section>
+<section class="panel"><h2 class="heading">收支分類統計 / CATEGORY BREAKDOWN</h2><div class="tabs"><button class="tab active" id="catExpense">支出分類</button><button class="tab" id="catIncome">收入分類</button></div><div id="categoryStats" class="empty">尚無交易資料</div></section>
+<section class="panel"><h2 class="heading">近六個月收支 / SIX-MONTH TREND</h2><div class="chart" id="chart"></div><div class="muted" style="text-align:center;margin-top:8px">紅色柱狀為支出；淡紅柱狀為收入</div></section>
+<section class="panel"><h2 class="heading">交易紀錄 / TRANSACTION HISTORY</h2><div class="filters"><div class="field"><label for="filterMonth">月份篩選</label><input type="month" id="filterMonth"></div><div class="field"><label for="filterKind">類型篩選</label><select id="filterKind"><option value="all">全部交易</option><option value="income">收入</option><option value="expense">支出</option></select></div></div><div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 3px"><span class="muted" id="recordCount">0 筆紀錄</span><button id="clearFilter" class="del">清除篩選</button></div><div id="records" class="empty">還沒有記帳紀錄。新增第一筆吧。</div></section>
+<section class="panel"><h2 class="heading">資料管理 / DATA MANAGEMENT</h2><div class="footer"><button id="export">匯出 JSON 備份</button><button id="importBtn">匯入還原</button><input id="importFile" type="file" accept=".json,application/json" hidden></div><p class="hint">資料保存在目前瀏覽器的本機儲存空間，不會自動同步至其他裝置。清除 Safari 網站資料或更換裝置前，請先匯出 JSON 備份。建議每月備份一次。</p><div class="muted" id="saveStatus">LOCAL STORAGE · 本機儲存</div></section>
+<footer class="muted" style="text-align:center;padding:8px">RED LEDGER · YOUR MONEY, YOUR CONTROL</footer>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),KEY='red_ledger_transactions_v1';
+const expenseCats=['三餐','飲料／點心','交通','購物','娛樂','服飾／Cosplay','生活用品','學習／教育','醫療','住宿／帳單','其他支出'];
+const incomeCats=['薪水','零用錢','獎金','投資收益','退款／回饋','接案／兼職','其他收入'];
+let data=[],period='month',catMode='expense';
+const now=new Date(),localDate=d=>{let x=new Date(d.getTime()-d.getTimezoneOffset()*60000);return x.toISOString().slice(0,10)},today=localDate(now);
+const money=n=>'NT$ '+Math.round(n).toLocaleString('en-US');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function load(){try{let v=JSON.parse(localStorage.getItem(KEY)||'[]');data=Array.isArray(v)?v.filter(x=>x&&['income','expense'].includes(x.type)&&Number.isFinite(Number(x.amount))&&typeof x.date==='string'):[]}catch{data=[];alert('無法讀取本機資料，請確認瀏覽器儲存空間。')}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='已儲存至本機 ✓'}catch{$('saveStatus').textContent='儲存失敗；請立即匯出備份'}}
+function setCats(){$('category').innerHTML=($('kind').value==='income'?incomeCats:expenseCats).map(x=>`<option>${esc(x)}</option>`).join('')}
+function scoped(){return data.filter(x=>period==='month'?x.date.slice(0,7)===today.slice(0,7):period==='year'?x.date.slice(0,4)===String(now.getFullYear()):true)}
+function summary(){let a=scoped(),inc=a.filter(x=>x.type==='income').reduce((s,x)=>s+Number(x.amount),0),out=a.filter(x=>x.type==='expense').reduce((s,x)=>s+Number(x.amount),0);$('sIncome').textContent=money(inc);$('sExpense').textContent=money(out);$('sBalance').textContent=money(inc-out);$('sBalance').style.color=inc-out<0?'#f05b70':'';$('summaryTitle').textContent=period==='month'?'MONTHLY OVERVIEW / 月度總覽':period==='year'?'YEARLY OVERVIEW / 年度總覽':'ALL-TIME OVERVIEW / 累計總覽';$('ratio').textContent=inc?'支出佔收入 '+(out/inc*100).toFixed(1)+'%':'尚無收入資料';$('ratioBar').style.width=(inc?Math.min(out/inc*100,100):0)+'%'}
+function categories(){let a=scoped().filter(x=>x.type===catMode),g={};a.forEach(x=>g[x.category]=(g[x.category]||0)+Number(x.amount));let es=Object.entries(g).sort((a,b)=>b[1]-a[1]),total=es.reduce((s,x)=>s+x[1],0);$('categoryStats').className=es.length?'':'empty';$('categoryStats').innerHTML=es.length?es.map(([n,v])=>`<div class="catline"><div><span>${esc(n)}</span><b>${money(v)}</b></div><div class="progress"><span style="width:${total?v/total*100:0}%"></span></div></div>`).join(''):'這段期間尚無分類資料'}
+function records(){let m=$('filterMonth').value,k=$('filterKind').value,a=data.filter(x=>(!m||x.date.startsWith(m))&&(k==='all'||x.type===k)).sort((x,y)=>y.date.localeCompare(x.date));$('recordCount').textContent=a.length+' 筆紀錄';$('records').className=a.length?'':'empty';$('records').innerHTML=a.length?a.map(x=>`<div class="row"><i class="dot" style="background:${x.type==='income'?'#e7a2ad':'#f05b70'}"></i><div class="info"><b>${esc(x.category)}${x.note?' · '+esc(x.note):''}</b><small>${esc(x.date)} · ${x.type==='income'?'收入':'支出'}</small></div><span class="amt ${x.type}">${x.type==='income'?'+':'−'}${money(x.amount)}</span><button class="del" data-del="${esc(x.id)}">刪除</button></div>`).join(''):'找不到符合條件的交易紀錄'}
+function chart(){let months=[];for(let i=5;i>=0;i--){let d=new Date(now.getFullYear(),now.getMonth()-i,1);let key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');let a=data.filter(x=>x.date.startsWith(key));months.push({label:(d.getMonth()+1)+'月',inc:a.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0),out:a.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0)})}let max=Math.max(1,...months.flatMap(x=>[x.inc,x.out]));$('chart').innerHTML=months.map(x=>`<div class="barcol"><div style="display:flex;align-items:end;gap:3px;height:100%;width:100%;justify-content:center"><div class="bar" title="收入 ${money(x.inc)}" style="height:${Math.max(2,x.inc/max*85)}%;background:linear-gradient(#eab0b9,#8a3949)"></div><div class="bar" title="支出 ${money(x.out)}" style="height:${Math.max(2,x.out/max*85)}%"></div></div><small>${x.label}</small></div>`).join('')}
+function render(){summary();categories();records();chart()}
+$('date').value=today;$('filterMonth').value=today.slice(0,7);$('kind').addEventListener('change',setCats);
+$('entryForm').addEventListener('submit',e=>{e.preventDefault();let amount=Number($('amount').value),date=$('date').value;if(!Number.isSafeInteger(amount)||amount<=0){alert('請輸入大於 0 的整數金額。');return}if(!date){alert('請選擇交易日期。');return}data.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),type:$('kind').value,category:$('category').value,amount,date,note:$('note').value.trim()});save();$('amount').value='';$('note').value='';render()});
+document.querySelectorAll('[data-period]').forEach(b=>b.addEventListener('click',()=>{period=b.dataset.period;document.querySelectorAll('[data-period]').forEach(x=>x.classList.toggle('active',x===b));render()}));
+$('catExpense').onclick=()=>{catMode='expense';$('catExpense').classList.add('active');$('catIncome').classList.remove('active');categories()};
+$('catIncome').onclick=()=>{catMode='income';$('catIncome').classList.add('active');$('catExpense').classList.remove('active');categories()};
+$('filterMonth').onchange=records;$('filterKind').onchange=records;$('clearFilter').onclick=()=>{$('filterMonth').value='';$('filterKind').value='all';records()};
+$('records').onclick=e=>{let b=e.target.closest('[data-del]');if(!b)return;if(confirm('確定刪除這筆紀錄？')){data=data.filter(x=>x.id!==b.dataset.del);save();render()}};
+$('export').onclick=()=>{let blob=new Blob([JSON.stringify({app:'RED LEDGER',version:1,exportedAt:new Date().toISOString(),transactions:data},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='red-ledger-backup-'+today+'.json';a.click();URL.revokeObjectURL(url)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let obj=JSON.parse(await f.text()),items=Array.isArray(obj)?obj:obj.transactions;if(!Array.isArray(items)||!items.every(x=>x&&['income','expense'].includes(x.type)&&typeof x.date==='string'&&Number.isSafeInteger(Number(x.amount))&&Number(x.amount)>0&&typeof x.category==='string'))throw Error();if(confirm('匯入 '+items.length+' 筆資料？這會取代目前帳本全部紀錄。請先確認已備份現有資料。')){data=items.map(x=>({id:String(x.id||Date.now()+Math.random()),type:x.type,category:x.category,amount:Number(x.amount),date:x.date,note:String(x.note||'').slice(0,100)}));save();render();alert('資料還原完成。')}}catch{alert('檔案格式不正確，無法匯入。')}finally{e.target.value=''}};
+load();setCats();render();
+if('serviceWorker'in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+})();
+</script>
+</body></html>
